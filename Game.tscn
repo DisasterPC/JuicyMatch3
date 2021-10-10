@@ -1,0 +1,123 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Grid/grid.gd" type="Script" id=1]
+[ext_resource path="res://Pieces/Piece Background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://UI/HUD.gd" type="Script" id=3]
+[ext_resource path="res://Assets/coin_small.png" type="Texture" id=4]
+[ext_resource path="res://Assets/background2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/untitledarea.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Assets/2.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/3.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/1.wav" type="AudioStream" id=9]
+[ext_resource path="res://Music.gd" type="Script" id=10]
+
+[sub_resource type="VisualShaderNodeColorFunc" id=1]
+default_input_values = [ 0, Vector3( 50, 50, 50 ) ]
+
+[sub_resource type="VisualShader" id=2]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+
+
+
+void vertex() {
+// ColorFunc:2
+	vec3 n_in2p0 = vec3(50.00000, 50.00000, 50.00000);
+	vec3 n_out2p0;
+	{
+		vec3 c = n_in2p0;
+		float max1 = max(c.r, c.g);
+		float max2 = max(max1, c.b);
+		float max3 = max(max1, max2);
+		n_out2p0 = vec3(max3, max3, max3);
+	}
+
+// Output:0
+	COLOR.rgb = n_out2p0;
+
+}
+
+void fragment() {
+// Output:0
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -40.6001, 116.4 )
+nodes/vertex/0/position = Vector2( 460, 100 )
+nodes/vertex/2/node = SubResource( 1 )
+nodes/vertex/2/position = Vector2( 60, 200 )
+nodes/vertex/connections = PoolIntArray( 2, 0, 0, 6 )
+nodes/fragment/0/position = Vector2( 400, 260 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+
+[node name="Game" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 3 )
+position = Vector2( -160, 0 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="grid" type="Node2D" parent="."]
+script = ExtResource( 1 )
+width = 7
+height = 10
+xStart = 82
+yStart = 832
+offset = 69
+background = ExtResource( 2 )
+
+[node name="Effects" type="Node2D" parent="."]
+
+[node name="HUD" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="HUD"]
+margin_right = 576.0
+margin_bottom = 35.0
+color = Color( 0, 0, 0, 0.501961 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="HUD"]
+position = Vector2( 20, 17 )
+texture = ExtResource( 4 )
+
+[node name="Score" type="Label" parent="HUD"]
+margin_left = 40.0
+margin_top = 7.0
+margin_right = 566.0
+margin_bottom = 27.0
+text = "	"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -0.5
+autoplay = true
+script = ExtResource( 10 )
+
+[node name="1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
